@@ -25,15 +25,23 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="auth-box">
-      <h1>Login</h1>
+    <div className="card auth-box">
+      <span className="auth-icon">🔑</span>
+      <h1>Welcome back</h1>
+      <p className="subtitle">Log in to see your dashboard.</p>
       <form onSubmit={handleSubmit}>
-        <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-        <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+        <label>
+          Email
+          <input type="email" placeholder="you@example.com" value={email} onChange={(e) => setEmail(e.target.value)} required />
+        </label>
+        <label>
+          Password
+          <input type="password" placeholder="••••••••" value={password} onChange={(e) => setPassword(e.target.value)} required />
+        </label>
         <button type="submit">Login</button>
       </form>
       {error && <p className="error">{error}</p>}
-      <p>No account yet? <Link href="/register">Register</Link></p>
+      <p className="switch">No account yet? <Link href="/register">Register</Link></p>
     </div>
   );
 }

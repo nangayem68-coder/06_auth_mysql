@@ -16,14 +16,34 @@ export default function DashboardPage() {
     window.location.href = "/login";
   }
 
-  if (!user) return <div className="auth-box">Loading...</div>;
+  if (!user) return <div className="card auth-box loading">Loading...</div>;
 
   return (
-    <div className="auth-box">
-      <h1>Dashboard</h1>
-      <p>Welcome, <b>{user.fullname}</b></p>
-      <p>Email: {user.email}</p>
-      <button onClick={handleLogout}>Logout</button>
+    <div className="card dashboard">
+      <div className="profile">
+        <div className="avatar">{user.fullname.charAt(0).toUpperCase()}</div>
+        <div>
+          <p className="subtitle">Welcome back,</p>
+          <h1>{user.fullname}</h1>
+        </div>
+      </div>
+
+      <dl className="info-list">
+        <div>
+          <dt>Email</dt>
+          <dd>{user.email}</dd>
+        </div>
+        <div>
+          <dt>Member ID</dt>
+          <dd>{user.id}</dd>
+        </div>
+        <div>
+          <dt>Member since</dt>
+          <dd>{new Date(user.created_at).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" })}</dd>
+        </div>
+      </dl>
+
+      <button className="logout" onClick={handleLogout}>Logout</button>
     </div>
   );
 }

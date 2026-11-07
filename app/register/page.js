@@ -27,16 +27,27 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="auth-box">
-      <h1>Register</h1>
+    <div className="card auth-box">
+      <span className="auth-icon">📝</span>
+      <h1>Create an account</h1>
+      <p className="subtitle">Register to access the members-only dashboard.</p>
       <form onSubmit={handleSubmit}>
-        <input placeholder="Full name" value={fullname} onChange={(e) => setFullname(e.target.value)} required />
-        <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-        <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+        <label>
+          Full name
+          <input placeholder="e.g. Nang Aye Myo Khaing" value={fullname} onChange={(e) => setFullname(e.target.value)} required />
+        </label>
+        <label>
+          Email
+          <input type="email" placeholder="you@example.com" value={email} onChange={(e) => setEmail(e.target.value)} required />
+        </label>
+        <label>
+          Password
+          <input type="password" placeholder="••••••••" value={password} onChange={(e) => setPassword(e.target.value)} required />
+        </label>
         <button type="submit">Register</button>
       </form>
       {error && <p className="error">{error}</p>}
-      <p>Already have an account? <Link href="/login">Login</Link></p>
+      <p className="switch">Already have an account? <Link href="/login">Login</Link></p>
     </div>
   );
 }
