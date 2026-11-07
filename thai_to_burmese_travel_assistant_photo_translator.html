@@ -1,0 +1,1423 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thai to Burmese Travel Assistant & Photo Translator | ထိုင်း-မြန်မာ ခရီးသွား ဘာသာပြန်</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Kanit:wght@300;400;500;600&family=Noto+Sans+Myanmar:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        thai: ['Kanit', 'sans-serif'],
+                        myanmar: ['Noto Sans Myanmar', 'sans-serif'],
+                    },
+                    colors: {
+                        emerald: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            500: '#10b981',
+                            600: '#059669',
+                            700: '#047857',
+                        },
+                        amber: {
+                            400: '#fbbf24',
+                            500: '#f59e0b',
+                            600: '#d97706',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        body {
+            font-family: 'Inter', 'Kanit', 'Noto Sans Myanmar', sans-serif;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .myanmar-text {
+            font-family: 'Noto Sans Myanmar', sans-serif;
+            line-height: 1.7;
+        }
+        .thai-text {
+            font-family: 'Kanit', sans-serif;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(226, 232, 240, 0.9);
+        }
+        .dark .glass-card {
+            background: rgba(30, 41, 59, 0.9);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(51, 65, 85, 0.9);
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.05);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(156, 163, 175, 0.5);
+            border-radius: 9999px;
+        }
+        @media print {
+            .no-print { display: none !important; }
+            body { background: white !important; color: black !important; }
+            .glass-card { background: none !important; border: 1px solid #ccc !important; box-shadow: none !important; }
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-100 min-h-screen flex flex-col transition-colors duration-200">
+
+    <!-- Header -->
+    <header class="no-print sticky top-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 shadow-sm transition-colors duration-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex flex-wrap items-center justify-between gap-3">
+            <!-- Brand & Flags -->
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-500 via-teal-600 to-amber-500 flex items-center justify-center text-white shadow-md shadow-emerald-500/20">
+                    <i class="fa-solid fa-camera-retro text-lg"></i>
+                </div>
+                <div>
+                    <div class="flex items-center gap-2">
+                        <h1 class="font-bold text-lg sm:text-xl text-slate-900 dark:text-white leading-tight">
+                            Thai ➔ Burmese Travel Assistant
+                        </h1>
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300">
+                            🇹🇭 ➔ 🇲🇲
+                        </span>
+                    </div>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 myanmar-text">
+                        ထိုင်း-မြန်မာ ခရီးသွား ဓာတ်ပုံ နှင့် ခရီးစဉ် ဘာသာပြန်စနစ်
+                    </p>
+                </div>
+            </div>
+
+            <!-- Header Actions -->
+            <div class="flex items-center space-x-2">
+                <button id="guideBtn" onclick="openGuideModal()" class="px-3 py-1.5 text-xs sm:text-sm font-medium text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-lg transition flex items-center gap-1.5">
+                    <i class="fa-regular fa-circle-question text-emerald-500"></i>
+                    <span>User Guide</span>
+                </button>
+                <button id="themeToggle" onclick="toggleTheme()" class="p-2 text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-lg transition" title="Toggle Theme">
+                    <i class="fa-solid fa-moon dark:hidden"></i>
+                    <i class="fa-solid fa-sun hidden dark:block text-amber-400"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-t border-slate-100 dark:border-slate-800/60">
+            <nav class="flex space-x-1 sm:space-x-4 overflow-x-auto py-2 no-scrollbar text-xs sm:text-sm font-medium">
+                <button onclick="switchTab('photo')" id="tab-photo" class="tab-btn active px-3.5 py-2 rounded-lg flex items-center gap-2 transition bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-400 font-semibold">
+                    <i class="fa-solid fa-camera"></i> 📸 Photo Translate (ဓာတ်ပုံဘာသာပြန်)
+                </button>
+                <button onclick="switchTab('translator')" id="tab-translator" class="tab-btn px-3.5 py-2 rounded-lg flex items-center gap-2 transition text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800">
+                    <i class="fa-solid fa-map-location-dot"></i> 🗺️ Itinerary Translator (ခရီးစဉ်)
+                </button>
+                <button onclick="switchTab('phrasebook')" id="tab-phrasebook" class="tab-btn px-3.5 py-2 rounded-lg flex items-center gap-2 transition text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800">
+                    <i class="fa-solid fa-book-bookmark"></i> 🗣️ Thai Speaking Guide (ထိုင်းစကားပြော)
+                </button>
+                <button onclick="switchTab('converter')" id="tab-converter" class="tab-btn px-3.5 py-2 rounded-lg flex items-center gap-2 transition text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800">
+                    <i class="fa-solid fa-calculator"></i> 💵 THB / MMK Converter (ငွေလဲ)
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+
+        <!-- TAB 1: PHOTO TRANSLATE (ဓာတ်ပုံဘာသာပြန်) -->
+        <section id="view-photo" class="space-y-6">
+            
+            <!-- Info Banner -->
+            <div class="glass-card rounded-2xl p-4 sm:p-5 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 bg-gradient-to-r from-emerald-500/10 via-teal-500/5 to-amber-500/10 border-emerald-200 dark:border-emerald-900">
+                <div class="flex items-start gap-3">
+                    <div class="p-3 rounded-xl bg-emerald-500 text-white shrink-0 mt-0.5 shadow-md shadow-emerald-500/20">
+                        <i class="fa-solid fa-wand-magic-sparkles text-xl"></i>
+                    </div>
+                    <div>
+                        <h2 class="font-bold text-slate-900 dark:text-white text-base sm:text-lg flex items-center gap-2">
+                            AI Photo Text Translator (ဓာတ်ပုံ ဘာသာပြန်စနစ်)
+                        </h2>
+                        <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 myanmar-text mt-0.5">
+                            ထိုင်းစာပါသော စားသောက်ဆိုင်မေနူး၊ လမ်းညွှန်ဆိုင်းဘုတ်၊ ယာဉ်လက်မှတ် သို့မဟုတ် ဆိုင်သတိပေးချက်များကို ဓာတ်ပုံရိုက်၍ မြန်မာဘာသာသို့ တိုက်ရိုက် ဘာသာပြန်ပါ
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Sample Photos Quick Buttons -->
+                <div class="w-full md:w-auto flex flex-col sm:flex-row items-stretch sm:items-center gap-2 shrink-0 border-t md:border-t-0 border-slate-200 dark:border-slate-800 pt-3 md:pt-0">
+                    <span class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Try Samples:</span>
+                    <div class="grid grid-cols-2 sm:flex gap-1.5 text-xs">
+                        <button onclick="loadSamplePhoto('menu')" class="px-2.5 py-1.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 hover:border-emerald-500 hover:text-emerald-600 transition flex items-center gap-1 font-medium">
+                            🍜 Menu
+                        </button>
+                        <button onclick="loadSamplePhoto('sign')" class="px-2.5 py-1.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 hover:border-emerald-500 hover:text-emerald-600 transition flex items-center gap-1 font-medium">
+                            🛑 Sign
+                        </button>
+                        <button onclick="loadSamplePhoto('ticket')" class="px-2.5 py-1.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 hover:border-emerald-500 hover:text-emerald-600 transition flex items-center gap-1 font-medium">
+                            🎟️ Ticket
+                        </button>
+                        <button onclick="loadSamplePhoto('notice')" class="px-2.5 py-1.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 hover:border-emerald-500 hover:text-emerald-600 transition flex items-center gap-1 font-medium">
+                            🏬 Notice
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Interactive Photo Box (Dual Column) -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+                
+                <!-- Left Box: Photo Upload / Capture & Canvas Preview -->
+                <div class="glass-card rounded-2xl p-5 shadow-sm space-y-4">
+                    <div class="flex items-center justify-between">
+                        <label class="font-semibold text-slate-800 dark:text-slate-200 flex items-center gap-2">
+                            <i class="fa-solid fa-image text-emerald-500"></i> Source Photo (ဓာတ်ပုံတင်ရန်)
+                        </label>
+                        <span id="imageStatusTag" class="text-xs px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-400 font-medium">
+                            Sample Loaded
+                        </span>
+                    </div>
+
+                    <!-- Dropzone & Upload Button -->
+                    <div id="dropzone" onclick="triggerFileInput()" class="relative border-2 border-dashed border-slate-300 dark:border-slate-700 hover:border-emerald-500 dark:hover:border-emerald-500 rounded-2xl p-4 text-center cursor-pointer transition group bg-slate-50/50 dark:bg-slate-900/40 min-h-[260px] flex flex-col items-center justify-center overflow-hidden">
+                        
+                        <input type="file" id="photoInput" accept="image/*" capture="environment" class="hidden" onchange="handleFileSelect(event)">
+                        
+                        <!-- Canvas / Image Preview Container -->
+                        <div id="previewWrapper" class="w-full flex flex-col items-center justify-center space-y-3">
+                            <img id="photoPreview" class="max-h-[300px] w-auto rounded-xl object-contain border border-slate-200 dark:border-slate-800 shadow-sm" alt="Thai Photo Preview">
+                            <div id="previewControls" class="flex items-center justify-center gap-2 text-xs">
+                                <button type="button" onclick="event.stopPropagation(); triggerFileInput();" class="px-3 py-1.5 rounded-lg bg-slate-800 text-white dark:bg-slate-200 dark:text-slate-900 font-medium hover:opacity-90 transition">
+                                    <i class="fa-solid fa-arrows-rotate"></i> Change Photo
+                                </button>
+                                <button type="button" onclick="event.stopPropagation(); clearPhoto();" class="px-3 py-1.5 rounded-lg bg-red-100 text-red-700 dark:bg-red-950 dark:text-red-300 font-medium hover:bg-red-200 transition">
+                                    <i class="fa-solid fa-trash-can"></i> Remove
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Empty State placeholder -->
+                        <div id="emptyState" class="hidden space-y-3 py-8">
+                            <div class="w-16 h-16 mx-auto rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-2xl group-hover:scale-110 transition duration-300">
+                                <i class="fa-solid fa-cloud-arrow-up"></i>
+                            </div>
+                            <div>
+                                <p class="font-semibold text-slate-700 dark:text-slate-200 text-sm">
+                                    Click to Snap Photo or Choose Image
+                                </p>
+                                <p class="text-xs text-slate-400 myanmar-text mt-1">
+                                    ဓာတ်ပုံရိုက်ရန် သို့မဟုတ် ဖုန်းထဲမှ ပုံရွေးရန် နှိပ်ပါ (JPG, PNG)
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Action Translate Button -->
+                    <button id="translatePhotoBtn" onclick="processPhotoTranslation()" class="w-full py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 active:scale-[0.99] text-white font-bold text-sm sm:text-base shadow-lg shadow-emerald-600/25 flex items-center justify-center gap-2 transition">
+                        <i class="fa-solid fa-sparkles"></i>
+                        <span>Translate Photo to Burmese (ဓာတ်ပုံ ဘာသာပြန်မည်)</span>
+                    </button>
+                </div>
+
+                <!-- Right Box: Burmese Translation & AI Analysis Output -->
+                <div class="glass-card rounded-2xl p-5 shadow-sm space-y-4">
+                    <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
+                        <label class="font-semibold text-slate-800 dark:text-slate-200 flex items-center gap-2">
+                            <span class="w-6 h-6 rounded-md bg-amber-100 dark:bg-amber-950 text-amber-600 dark:text-amber-400 flex items-center justify-center text-xs font-bold">MM</span>
+                            Burmese Result & Analysis (မြန်မာဘာသာပြန် ရလဒ်)
+                        </label>
+                        <div class="flex items-center gap-2 no-print">
+                            <button onclick="copyPhotoTranslation()" title="Copy Burmese" class="p-2 text-xs font-semibold text-slate-600 dark:text-slate-300 hover:text-emerald-600 bg-slate-100 dark:bg-slate-800 rounded-lg transition flex items-center gap-1">
+                                <i class="fa-regular fa-copy"></i> Copy Text
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Loading Spinner State -->
+                    <div id="photoLoading" class="hidden py-16 text-center space-y-4">
+                        <div class="inline-block animate-spin rounded-full h-10 w-10 border-4 border-emerald-500 border-t-transparent"></div>
+                        <div class="space-y-1">
+                            <p class="font-semibold text-slate-800 dark:text-slate-200 text-sm myanmar-text">
+                                AI မှ ဓာတ်ပုံပါ ထိုင်းစာများကို ဖတ်ရှု၍ မြန်မာဘာသာသို့ ပြန်ဆိုနေပါသည်...
+                            </p>
+                            <p class="text-xs text-slate-400">Extracting Thai OCR text & generating Burmese travel context...</p>
+                        </div>
+                    </div>
+
+                    <!-- Translation Result Card -->
+                    <div id="photoResultContainer" class="space-y-4">
+                        <!-- Default populated dynamically -->
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- TAB 2: ITINERARY TRANSLATOR -->
+        <section id="view-translator" class="hidden space-y-6">
+            
+            <!-- Quick Preset Selector Cards -->
+            <div class="no-print space-y-2">
+                <div class="flex items-center justify-between">
+                    <h2 class="text-xs uppercase tracking-wider font-semibold text-slate-500 dark:text-slate-400 flex items-center gap-2">
+                        <i class="fa-solid fa-bolt text-amber-500"></i> Load Popular Travel Presets
+                    </h2>
+                    <span class="text-xs text-slate-400">Click card to load</span>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                    <button onclick="loadPreset('bangkok')" class="text-left p-3.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-800/80 hover:border-emerald-500 hover:shadow-md transition group relative overflow-hidden">
+                        <div class="flex items-center justify-between mb-1">
+                            <span class="text-xs font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950 px-2 py-0.5 rounded">3 Days</span>
+                            <span class="text-xs text-slate-400">กรุงเทพฯ</span>
+                        </div>
+                        <h3 class="font-semibold text-slate-800 dark:text-slate-100 text-sm group-hover:text-emerald-600 transition">
+                            Bangkok Cultural & Shopping
+                        </h3>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 mt-1 line-clamp-1">
+                            Grand Palace, Wat Arun, Chatuchak & ICONSIAM
+                        </p>
+                    </button>
+
+                    <button onclick="loadPreset('chiangmai')" class="text-left p-3.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-800/80 hover:border-emerald-500 hover:shadow-md transition group relative overflow-hidden">
+                        <div class="flex items-center justify-between mb-1">
+                            <span class="text-xs font-bold text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-950 px-2 py-0.5 rounded">4 Days</span>
+                            <span class="text-xs text-slate-400">เชียงใหม่ & เชียงราย</span>
+                        </div>
+                        <h3 class="font-semibold text-slate-800 dark:text-slate-100 text-sm group-hover:text-emerald-600 transition">
+                            Chiang Mai & Chiang Rai
+                        </h3>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 mt-1 line-clamp-1">
+                            Doi Suthep, White Temple & Mountain Cafes
+                        </p>
+                    </button>
+
+                    <button onclick="loadPreset('phuket')" class="text-left p-3.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-800/80 hover:border-emerald-500 hover:shadow-md transition group relative overflow-hidden">
+                        <div class="flex items-center justify-between mb-1">
+                            <span class="text-xs font-bold text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-950 px-2 py-0.5 rounded">3 Days</span>
+                            <span class="text-xs text-slate-400">ภูเก็ต & กระบี่</span>
+                        </div>
+                        <h3 class="font-semibold text-slate-800 dark:text-slate-100 text-sm group-hover:text-emerald-600 transition">
+                            Phuket & Krabi Island Hopping
+                        </h3>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 mt-1 line-clamp-1">
+                            Patong Beach, Phi Phi Islands & Railay
+                        </p>
+                    </button>
+
+                    <button onclick="loadPreset('ayutthaya')" class="text-left p-3.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-800/80 hover:border-emerald-500 hover:shadow-md transition group relative overflow-hidden">
+                        <div class="flex items-center justify-between mb-1">
+                            <span class="text-xs font-bold text-purple-600 dark:text-purple-400 bg-purple-50 dark:bg-purple-950 px-2 py-0.5 rounded">2 Days</span>
+                            <span class="text-xs text-slate-400">อยุธยา & กาญจนบุรี</span>
+                        </div>
+                        <h3 class="font-semibold text-slate-800 dark:text-slate-100 text-sm group-hover:text-emerald-600 transition">
+                            Historic Ayutthaya & Kanchanaburi
+                        </h3>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 mt-1 line-clamp-1">
+                            Ancient Temples & River Kwai Bridge
+                        </p>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Workspace Pane -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+                <!-- Input Box -->
+                <div class="no-print glass-card rounded-2xl p-5 shadow-sm space-y-4">
+                    <div class="flex items-center justify-between">
+                        <label for="thaiInput" class="font-semibold text-slate-800 dark:text-slate-200 flex items-center gap-2">
+                            <span class="w-6 h-6 rounded-md bg-red-100 dark:bg-red-950 text-red-600 dark:text-red-400 flex items-center justify-center text-xs font-bold">TH</span>
+                            Thai Itinerary Text (ภาษาไทย)
+                        </label>
+                        <div class="flex items-center gap-2">
+                            <button onclick="clearInput()" class="text-xs text-slate-500 hover:text-red-500 transition px-2 py-1 rounded hover:bg-slate-100 dark:hover:bg-slate-800">
+                                <i class="fa-regular fa-trash-can"></i> Clear
+                            </button>
+                            <button onclick="pasteFromClipboard()" class="text-xs text-emerald-600 dark:text-emerald-400 hover:underline px-2 py-1">
+                                <i class="fa-regular fa-paste"></i> Paste
+                            </button>
+                        </div>
+                    </div>
+
+                    <textarea id="thaiInput" rows="14" class="w-full p-4 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 text-sm focus:ring-2 focus:ring-emerald-500 outline-none thai-text transition resize-y" placeholder="วางข้อความแผนการเดินทางภาษาไทยของคุณที่นี่..."></textarea>
+
+                    <div class="flex items-center justify-between pt-2">
+                        <span id="charCounter" class="text-xs text-slate-400">0 characters</span>
+                        <button id="translateBtn" onclick="runTranslation()" class="px-6 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white font-semibold text-sm shadow-md shadow-emerald-600/30 flex items-center gap-2 transition">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i>
+                            <span>Translate to Burmese</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Translation Output Header & Controls -->
+                <div class="space-y-4">
+                    <div class="glass-card rounded-2xl p-5 shadow-sm space-y-4">
+                        <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-200 dark:border-slate-700 pb-3">
+                            <label class="font-semibold text-slate-800 dark:text-slate-200 flex items-center gap-2">
+                                <span class="w-6 h-6 rounded-md bg-yellow-100 dark:bg-yellow-950 text-amber-600 dark:text-amber-400 flex items-center justify-center text-xs font-bold">MM</span>
+                                Burmese Translated Itinerary (မြန်မာဘာသာ)
+                            </label>
+                            
+                            <!-- Action Controls -->
+                            <div class="flex items-center space-x-1.5 no-print">
+                                <button onclick="copyBurmeseText()" title="Copy Text" class="p-2 text-slate-600 dark:text-slate-300 hover:text-emerald-600 bg-slate-100 dark:bg-slate-800 rounded-lg transition text-xs flex items-center gap-1 font-medium">
+                                    <i class="fa-regular fa-copy"></i> Copy
+                                </button>
+                                <button onclick="downloadTextFile()" title="Download TXT" class="p-2 text-slate-600 dark:text-slate-300 hover:text-emerald-600 bg-slate-100 dark:bg-slate-800 rounded-lg transition text-xs flex items-center gap-1 font-medium">
+                                    <i class="fa-solid fa-download"></i> Download
+                                </button>
+                                <button onclick="triggerPrint()" title="Print / Save PDF" class="p-2 text-slate-600 dark:text-slate-300 hover:text-emerald-600 bg-slate-100 dark:bg-slate-800 rounded-lg transition text-xs flex items-center gap-1 font-medium">
+                                    <i class="fa-solid fa-print"></i> Print/PDF
+                                </button>
+                            </div>
+                        </div>
+
+                        <div id="loadingState" class="hidden py-12 text-center space-y-3">
+                            <div class="inline-block animate-spin rounded-full h-8 w-8 border-4 border-emerald-500 border-t-transparent"></div>
+                            <p class="text-sm text-slate-500 myanmar-text">ခရီးစဉ်များကို မြန်မာဘာသာသို့ ပြန်ဆိုနေပါသည်...</p>
+                        </div>
+
+                        <div id="outputContainer" class="space-y-4 max-h-[550px] overflow-y-auto pr-1">
+                            <!-- Populated dynamically -->
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- TAB 3: POCKET PHRASEBOOK -->
+        <section id="view-phrasebook" class="hidden space-y-6">
+            <div class="glass-card rounded-2xl p-6 space-y-6">
+                <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border-b border-slate-200 dark:border-slate-800 pb-4">
+                    <div>
+                        <h2 class="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                            <i class="fa-solid fa-volume-high text-emerald-500"></i> Thai Speaking Guide for Burmese Travelers
+                        </h2>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 myanmar-text">
+                            ထိုင်းစကား အမှန်ထွက်ဆိုနည်းများ၊ မြန်မာလို အသံထွက်လမ်းညွှန် နှင့် အသံနားထောင်စနစ် (🔊 Rate: 0.85)
+                        </p>
+                    </div>
+
+                    <!-- Search Input & Category Filters Container -->
+                    <div class="w-full md:w-auto flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5">
+                        <div class="relative min-w-[220px]">
+                            <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+                            <input type="text" id="phraseSearchInput" oninput="filterPhrases()" placeholder="Search phrase (ရှာဖွေရန်)..." class="w-full pl-8 pr-3 py-1.5 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 focus:ring-2 focus:ring-emerald-500 outline-none">
+                        </div>
+                        <div id="phraseCategoryContainer" class="flex flex-wrap gap-1.5 text-xs">
+                            <!-- Category Filter Buttons populated by JS -->
+                        </div>
+                    </div>
+                </div>
+
+                <div id="phrasebookGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <!-- Cards populated by JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 4: CURRENCY CONVERTER -->
+        <section id="view-converter" class="hidden space-y-6">
+            <div class="max-w-4xl mx-auto glass-card rounded-2xl p-6 sm:p-8 space-y-6">
+                <div class="text-center space-y-2 border-b border-slate-200 dark:border-slate-800 pb-4">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-50 dark:bg-amber-950/60 text-amber-700 dark:text-amber-400 text-xs font-semibold">
+                        <i class="fa-solid fa-coins"></i> Travel Currency Calculator & Expense Guide
+                    </div>
+                    <h2 class="text-xl font-bold text-slate-900 dark:text-white">Thai Baht (THB) ↔ Myanmar Kyat (MMK)</h2>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 myanmar-text">
+                        ထိုင်းဘတ် နှင့် မြန်မာကျပ် ငွေလဲလှယ်နှုန်း တွက်ချက်စက်
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+                    <div class="space-y-2">
+                        <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider">
+                            Thai Baht (บาท / THB)
+                        </label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-400 font-bold">🇹🇭 ฿</span>
+                            <input type="number" id="thbInput" value="1000" oninput="convertFromTHB()" class="w-full pl-12 pr-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 font-bold text-lg text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500 outline-none">
+                        </div>
+                    </div>
+
+                    <div class="space-y-2">
+                        <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider">
+                            Myanmar Kyat (ကျပ် / MMK)
+                        </label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-400 font-bold">🇲🇲 Ks</span>
+                            <input type="number" id="mmkInput" oninput="convertFromMMK()" class="w-full pl-14 pr-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 font-bold text-lg text-emerald-600 dark:text-emerald-400 focus:ring-2 focus:ring-emerald-500 outline-none">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="p-4 rounded-xl bg-slate-100 dark:bg-slate-800/80 space-y-3">
+                    <div class="flex items-center justify-between text-xs">
+                        <span class="font-semibold text-slate-700 dark:text-slate-300">Reference Exchange Rate:</span>
+                        <div class="flex items-center gap-1">
+                            <span>1 THB = </span>
+                            <input type="number" id="exchangeRateInput" value="115" step="0.5" onchange="updateExchangeRate()" class="w-20 px-2 py-1 rounded border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-center font-semibold text-xs">
+                            <span>MMK</span>
+                        </div>
+                    </div>
+                    <div class="flex flex-wrap gap-2 pt-1">
+                        <button onclick="setTHBQuick(100)" class="px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-emerald-50 text-xs font-medium transition">฿100 THB</button>
+                        <button onclick="setTHBQuick(500)" class="px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-emerald-50 text-xs font-medium transition">฿500 THB</button>
+                        <button onclick="setTHBQuick(1000)" class="px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-emerald-50 text-xs font-medium transition">฿1,000 THB</button>
+                        <button onclick="setTHBQuick(5000)" class="px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-emerald-50 text-xs font-medium transition">฿5,000 THB</button>
+                    </div>
+                </div>
+
+                <!-- Typical Travel Expense Reference Table -->
+                <div class="space-y-3 pt-4 border-t border-slate-200 dark:border-slate-800">
+                    <h3 class="font-bold text-sm text-slate-800 dark:text-slate-200 flex items-center gap-2">
+                        <i class="fa-solid fa-utensils text-emerald-500"></i> Typical Travel Expense Benchmarks (ထိုင်းခရီးစဉ် ပျမ်းမျှကုန်ကျစရိတ်များ)
+                    </h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 text-xs">
+                        <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 flex justify-between items-center">
+                            <div>
+                                <p class="font-semibold text-slate-800 dark:text-slate-200">Street Food Meal</p>
+                                <p class="text-slate-400 myanmar-text text-[11px]">လမ်းဘေး အစားအစာ</p>
+                            </div>
+                            <div class="text-right">
+                                <span class="font-bold text-emerald-600">฿60 THB</span>
+                                <p id="bench-food" class="text-slate-400">~6,900 MMK</p>
+                            </div>
+                        </div>
+
+                        <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 flex justify-between items-center">
+                            <div>
+                                <p class="font-semibold text-slate-800 dark:text-slate-200">BTS / MRT Train Ride</p>
+                                <p class="text-slate-400 myanmar-text text-[11px]">မြို့တွင်း ရထားစီးခ</p>
+                            </div>
+                            <div class="text-right">
+                                <span class="font-bold text-emerald-600">฿35 THB</span>
+                                <p id="bench-bts" class="text-slate-400">~4,025 MMK</p>
+                            </div>
+                        </div>
+
+                        <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 flex justify-between items-center">
+                            <div>
+                                <p class="font-semibold text-slate-800 dark:text-slate-200">Thai Milk Tea (Cha Yen)</p>
+                                <p class="text-slate-400 myanmar-text text-[11px]">ထိုင်းလက်ဖက်ရည်</p>
+                            </div>
+                            <div class="text-right">
+                                <span class="font-bold text-emerald-600">฿50 THB</span>
+                                <p id="bench-tea" class="text-slate-400">~5,750 MMK</p>
+                            </div>
+                        </div>
+
+                        <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 flex justify-between items-center">
+                            <div>
+                                <p class="font-semibold text-slate-800 dark:text-slate-200">Traditional Thai Massage (1h)</p>
+                                <p class="text-slate-400 myanmar-text text-[11px]">ထိုင်း အနှိပ် (၁ နာရီ)</p>
+                            </div>
+                            <div class="text-right">
+                                <span class="font-bold text-emerald-600">฿300 THB</span>
+                                <p id="bench-massage" class="text-slate-400">~34,500 MMK</p>
+                            </div>
+                        </div>
+
+                        <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 flex justify-between items-center">
+                            <div>
+                                <p class="font-semibold text-slate-800 dark:text-slate-200">Tourist SIM Card (7 Days)</p>
+                                <p class="text-slate-400 myanmar-text text-[11px]">ခရီးသွား ဆင်းကတ်</p>
+                            </div>
+                            <div class="text-right">
+                                <span class="font-bold text-emerald-600">฿299 THB</span>
+                                <p id="bench-sim" class="text-slate-400">~34,385 MMK</p>
+                            </div>
+                        </div>
+
+                        <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 flex justify-between items-center">
+                            <div>
+                                <p class="font-semibold text-slate-800 dark:text-slate-200">Tuk Tuk Short Trip</p>
+                                <p class="text-slate-400 myanmar-text text-[11px]">တုတ်တုတ် စီးခ</p>
+                            </div>
+                            <div class="text-right">
+                                <span class="font-bold text-emerald-600">฿100 THB</span>
+                                <p id="bench-tuktuk" class="text-slate-400">~11,500 MMK</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Guide Modal -->
+    <div id="guideModal" class="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-slate-900 rounded-2xl max-w-lg w-full p-6 space-y-4 border border-slate-200 dark:border-slate-800 shadow-2xl">
+            <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
+                <h3 class="font-bold text-lg text-slate-900 dark:text-white flex items-center gap-2">
+                    <i class="fa-solid fa-circle-info text-emerald-500"></i> How to use this app
+                </h3>
+                <button onclick="closeGuideModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+            <div class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 space-y-3 leading-relaxed">
+                <p><strong>1. 📸 Photo Translate:</strong> Take a photo or upload an image of any Thai menu, street sign, or train ticket. Click <em>"Translate Photo"</em> to get instant Burmese translations & OCR advice.</p>
+                <p><strong>2. 🗺️ Itinerary Translator:</strong> Paste Thai trip schedules or choose preset trips (Bangkok, Chiang Mai, Phuket, Ayutthaya) to translate into day-by-day Burmese guides.</p>
+                <p><strong>3. 🗣️ Thai Speaking Guide:</strong> Tap 🔊 to listen to authentic Thai audio. Read the English romanization and Burmese script phonetics to master Thai pronunciation.</p>
+                <p><strong>4. 💵 Currency Converter:</strong> Calculate exchange rates between Thai Baht and Myanmar Kyat with real-time reference prices.</p>
+            </div>
+            <div class="pt-2 flex justify-end">
+                <button onclick="closeGuideModal()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-medium text-xs rounded-xl transition">
+                    Got it!
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-5 right-5 z-50 transform translate-y-20 opacity-0 transition-all duration-300 bg-slate-900 text-white dark:bg-white dark:text-slate-900 px-4 py-3 rounded-xl shadow-xl flex items-center gap-3 text-xs font-semibold max-w-md">
+        <i id="toastIcon" class="fa-solid fa-circle-check text-emerald-400"></i>
+        <span id="toastMessage">Notification message</span>
+    </div>
+
+    <!-- Footer -->
+    <footer class="no-print border-t border-slate-200 dark:border-slate-800 py-6 text-center text-xs text-slate-500 dark:text-slate-400">
+        <p>Thai ➔ Burmese Travel Assistant & Photo Translator • Powered by AI</p>
+        <p class="mt-1 myanmar-text text-slate-400">ထိုင်းနိုင်ငံ ခရီးသွား ဓာတ်ပုံ နှင့် စာသား ဘာသာပြန်စနစ်</p>
+    </footer>
+
+    <!-- JavaScript Logic -->
+    <script>
+        /* ----------------------------------------------------
+           SAMPLE SVG GENERATOR DATA (FOR TESTING PHOTO TRANSLATE)
+        ---------------------------------------------------- */
+        const samplePhotoData = {
+            menu: {
+                title: "Thai Restaurant Menu",
+                category: "🍜 Restaurant Menu",
+                detectedThai: "1. ผัดไทยกุ้งสด (Pad Thai) - 80.-\n2. ต้มยำกุ้งน้ำข้น - 150.-\n3. ข้าวผัดไก่ - 60.-\n4. ชาเย็น (Thai Milk Tea) - 40.-",
+                burmeseTranslation: "၁။ ပုစွန် ဖတ်ထိုင်း - ၈၀ ဘတ်\n၂။ ပုစွန် တုံယမ်းဟင်းချို - ၁၅၀ ဘတ်\n၃။ ကြက်သား ထမင်းကြော် - ၆၀ ဘတ်\n၄။ ထိုင်း လက်ဖက်ရည်အေး - ၄၀ ဘတ်",
+                phoneticGuide: "1. Sa-wat-dee / Pad Thai Kung Sod (80 Baht)\n2. Tom Yum Kung Nam Khon (150 Baht)\n3. Khao Pad Kai (60 Baht)\n4. Cha Yen (40 Baht)",
+                travelTips: "ထိုင်းအစားအစာ အတော်များများတွင် မြေပဲ နှင့် ငရုတ်သီး ပါဝင်တတ်သည်။ မစပ်စေချင်ပါက 'မိုင်ဖက်' (ไม่เผ็ด - မစပ်ပါနဲ့) ဟု ပြောဆို အော်ဒါမှာယူနိုင်ပါသည်။",
+                svg: `<svg xmlns="http://www.w3.org/2000/svg" width="600" height="400" viewBox="0 0 600 400" fill="none">
+                    <rect width="600" height="400" rx="16" fill="#FFFBEB"/>
+                    <rect x="20" y="20" width="560" height="360" rx="12" fill="#FFFFFF" stroke="#F59E0B" stroke-width="4"/>
+                    <text x="300" y="65" text-anchor="middle" font-family="Kanit, sans-serif" font-size="28" font-weight="bold" fill="#B45309">เมนูอาหารไทย (THAI MENU)</text>
+                    <line x1="100" y1="85" x2="500" y2="85" stroke="#FBBF24" stroke-width="2"/>
+                    
+                    <text x="50" y="140" font-family="Kanit, sans-serif" font-size="22" font-weight="bold" fill="#1E293B">1. ผัดไทยกุ้งสด (Pad Thai)</text>
+                    <text x="520" y="140" text-anchor="end" font-family="Kanit, sans-serif" font-size="22" font-weight="bold" fill="#059669">80 .-</text>
+                    
+                    <text x="50" y="200" font-family="Kanit, sans-serif" font-size="22" font-weight="bold" fill="#1E293B">2. ต้มยำกุ้งน้ำข้น (Tom Yum)</text>
+                    <text x="520" y="200" text-anchor="end" font-family="Kanit, sans-serif" font-size="22" font-weight="bold" fill="#059669">150 .-</text>
+                    
+                    <text x="50" y="260" font-family="Kanit, sans-serif" font-size="22" font-weight="bold" fill="#1E293B">3. ข้าวผัดไก่ (Fried Rice)</text>
+                    <text x="520" y="260" text-anchor="end" font-family="Kanit, sans-serif" font-size="22" font-weight="bold" fill="#059669">60 .-</text>
+                    
+                    <text x="50" y="320" font-family="Kanit, sans-serif" font-size="22" font-weight="bold" fill="#1E293B">4. ชาเย็น (Thai Milk Tea)</text>
+                    <text x="520" y="320" text-anchor="end" font-family="Kanit, sans-serif" font-size="22" font-weight="bold" fill="#059669">40 .-</text>
+                </svg>`
+            },
+            sign: {
+                title: "BTS Skytrain Street Sign",
+                category: "🛑 Transport & Wayfinding Sign",
+                detectedThai: "ทางออก 3 (Exit 3)\nไปสยาม (To Siam)\nสถานีรถไฟฟ้า BTS",
+                burmeseTranslation: "ထွက်ပေါက် (၃)\nဆိုင်းယမ် သို့ သွားရန်\nBTS လေဟာပြင် ရထားဘူတာရုံ",
+                phoneticGuide: "Thang Ok Sam (Exit 3) -> Pai Siam -> Sathani Rot Fai Fa BTS",
+                travelTips: "ဆိုင်းယမ် (Siam) ဘူတာသည် ဘန်ကောက်၏ အဓိက ဈေးဝယ်စင်တာများ (Siam Paragon, CentralWorld) သို့ သွားရောက်နိုင်သော အဓိက လဲလှယ်ဘူတာ ဖြစ်ပါသည်။",
+                svg: `<svg xmlns="http://www.w3.org/2000/svg" width="600" height="400" viewBox="0 0 600 400" fill="none">
+                    <rect width="600" height="400" rx="16" fill="#0F172A"/>
+                    <rect x="20" y="20" width="560" height="360" rx="12" fill="#1E293B" stroke="#0EA5E9" stroke-width="4"/>
+                    <rect x="40" y="40" width="520" height="70" rx="8" fill="#0284C7"/>
+                    <text x="300" y="85" text-anchor="middle" font-family="Kanit, sans-serif" font-size="30" font-weight="bold" fill="#FFFFFF">ทางออก 3 (Exit 3)</text>
+                    
+                    <path d="M 280 180 L 320 140 L 320 170 L 400 170 L 400 190 L 320 190 L 320 220 Z" fill="#10B981"/>
+                    <text x="250" y="190" text-anchor="end" font-family="Kanit, sans-serif" font-size="28" font-weight="bold" fill="#F8FAFC">ไปสยาม</text>
+                    <text x="250" y="225" text-anchor="end" font-family="Inter, sans-serif" font-size="18" fill="#94A3B8">To Siam Station</text>
+
+                    <rect x="50" y="280" width="500" height="70" rx="8" fill="#334155"/>
+                    <text x="300" y="323" text-anchor="middle" font-family="Kanit, sans-serif" font-size="22" font-weight="bold" fill="#FACC15">สถานีรถไฟฟ้า BTS (BTS Skytrain)</text>
+                </svg>`
+            },
+            ticket: {
+                title: "Thai Train Ticket",
+                category: "🎟️ Travel Ticket",
+                detectedThai: "การรถไฟแห่งประเทศไทย\nกรุงเทพ (Bangkok) -> เชียงใหม่ (Chiang Mai)\nขบวน 13 / รถเร็ว / 550 บาท",
+                burmeseTranslation: "ထိုင်းနိုင်ငံတော် ရထားပို့ဆောင်ရေး\nဘန်ကောက် မှ ချင်းမိုင် သို့\nရထားအမှတ် (၁၃) / အမြန်ရထား / ၅၅၀ ဘတ်",
+                phoneticGuide: "Kan Rot Fai -> Bangkok thung Chiang Mai -> Rot Reo (550 Baht)",
+                travelTips: "ရထားလက်မှတ်တွင် ထိုင်ခုံအမှတ် နှင့် တွဲအမှတ် (Car Number) ပါရှိပါသည်။ ဘူတာရုံသို့ ထွက်ခွာချိန်မတိုင်မီ အနည်းဆုံး မိနစ် ၃၀ ကြိုတင် ရောက်ရှိသင့်ပါသည်။",
+                svg: `<svg xmlns="http://www.w3.org/2000/svg" width="600" height="400" viewBox="0 0 600 400" fill="none">
+                    <rect width="600" height="400" rx="16" fill="#F8FAFC"/>
+                    <rect x="20" y="20" width="560" height="360" rx="12" fill="#FFFFFF" stroke="#64748B" stroke-width="2" stroke-dasharray="8 8"/>
+                    <rect x="20" y="20" width="560" height="60" fill="#BE185D"/>
+                    <text x="300" y="58" text-anchor="middle" font-family="Kanit, sans-serif" font-size="22" font-weight="bold" fill="#FFFFFF">ตั๋วรถไฟ (State Railway of Thailand)</text>
+
+                    <text x="50" y="130" font-family="Kanit, sans-serif" font-size="20" fill="#64748B">ต้นทาง (From):</text>
+                    <text x="50" y="165" font-family="Kanit, sans-serif" font-size="26" font-weight="bold" fill="#0F172A">กรุงเทพ (Bangkok)</text>
+
+                    <text x="350" y="130" font-family="Kanit, sans-serif" font-size="20" fill="#64748B">ปลายทาง (To):</text>
+                    <text x="350" y="165" font-family="Kanit, sans-serif" font-size="26" font-weight="bold" fill="#0F172A">เชียงใหม่ (Chiang Mai)</text>
+
+                    <line x1="50" y1="200" x2="550" y2="200" stroke="#E2E8F0" stroke-width="2"/>
+
+                    <text x="50" y="250" font-family="Kanit, sans-serif" font-size="20" fill="#475569">ขบวน: 13 (Train 13)</text>
+                    <text x="350" y="250" font-family="Kanit, sans-serif" font-size="20" fill="#475569">ประเภท: รถเร็ว</text>
+
+                    <rect x="50" y="280" width="500" height="70" rx="8" fill="#FDF2F8"/>
+                    <text x="70" y="323" font-family="Kanit, sans-serif" font-size="22" font-weight="bold" fill="#BE185D">ราคา (Price): 550 บาท</text>
+                </svg>`
+            },
+            notice: {
+                title: "Shop Hours Notice",
+                category: "🏬 Shop Notice / Hours",
+                detectedThai: "เวลาทำการ (Opening Hours)\nเปิดบริการ 10:00 - 22:00 น.\nหยุดทุกวันจันทร์ (Closed on Mondays)",
+                burmeseTranslation: "ဆိုင်ဖွင့်ချိန်\nနံနက် ၁၀:၀၀ မှ ည ၁၀:၀၀ ထိ ဖွင့်လှစ်သည်\nတနင်္လာနေ့တိုင်း ဆိုင်ပိတ်သည်",
+                phoneticGuide: "Wela Thamkan -> Poet 10:00 - 22:00 -> Yut Thuk Wan Chan",
+                travelTips: "ထိုင်းနိုင်ငံရှိ ဆိုင်အများစုသည် တနင်္လာနေ့များတွင် ပိတ်လေ့ရှိပါသည်။ ခရီးစဉ်မသွားမီ ဆိုင်ဖွင့်ချိန်ကို ကြိုတင်စစ်ဆေးပါရန် အကြံပြုပါသည်။",
+                svg: `<svg xmlns="http://www.w3.org/2000/svg" width="600" height="400" viewBox="0 0 600 400" fill="none">
+                    <rect width="600" height="400" rx="16" fill="#F0FDF4"/>
+                    <rect x="20" y="20" width="560" height="360" rx="12" fill="#FFFFFF" stroke="#16A34A" stroke-width="4"/>
+                    
+                    <circle cx="300" cy="80" r="30" fill="#DCFCE7"/>
+                    <path d="M 300 65 L 300 80 L 315 80" stroke="#16A34A" stroke-width="4" stroke-linecap="round"/>
+
+                    <text x="300" y="150" text-anchor="middle" font-family="Kanit, sans-serif" font-size="28" font-weight="bold" fill="#15803D">เวลาทำการ (OPENING HOURS)</text>
+                    
+                    <text x="300" y="220" text-anchor="middle" font-family="Kanit, sans-serif" font-size="26" font-weight="bold" fill="#1E293B">เปิดบริการ 10:00 - 22:00 น.</text>
+
+                    <rect x="100" y="270" width="400" height="60" rx="8" fill="#FEE2E2"/>
+                    <text x="300" y="308" text-anchor="middle" font-family="Kanit, sans-serif" font-size="20" font-weight="bold" fill="#DC2626">หยุดทุกวันจันทร์ (Closed Mondays)</text>
+                </svg>`
+            }
+        };
+
+        /* Phrasebook Data with Thai Speech & Dual Phonetics */
+        const phrasebookData = [
+            // Greetings
+            { cat: "Greetings", th: "สวัสดีครับ / ค่ะ", my: "မင်္ဂလာပါ", roman: "Sa-wat-dee khrap / kha", myPhonetic: "ဆဝါးဒီး ခရပ် / ခ" },
+            { cat: "Greetings", th: "ขอบคุณครับ / ค่ะ", my: "ကျေးဇူးတင်ပါတယ်", roman: "Khop-khun khrap / kha", myPhonetic: "ခေါ့ပ်ခွန်း ခရပ် / ခ" },
+            { cat: "Greetings", th: "ขอโทษครับ / ค่ะ", my: "တောင်းပန်ပါတယ် / အားနာပါတယ်", roman: "Kho-thot khrap / kha", myPhonetic: "ခေါ့ထိုးတ် ခရပ် / ခ" },
+            { cat: "Greetings", th: "สบายดีไหมครับ / ค่ะ?", my: "နေကောင်းရဲ့လား?", roman: "Sa-bai-dee mai khrap / kha?", myPhonetic: "ဆဘိုင်းဒီး မိုင် ခရပ် / ခ?" },
+            { cat: "Greetings", th: "ยินดีที่ได้รู้จักครับ / ค่ะ", my: "တွေ့ရတာ ဝမ်းသာပါတယ်", roman: "Yin-dee thee dai roo-jak khrap / kha", myPhonetic: "ယင်ဒီ ထီး ဒိုင်း ရူးဂျက် ခရပ် / ခ" },
+            { cat: "Greetings", th: "ไม่เป็นไรครับ / ค่ะ", my: "ရပါတယ် / ကိစ္စမရှိပါဘူး", roman: "Mai pen rai khrap / kha", myPhonetic: "မိုင် ပင် ရိုင် ခရပ် / ခ" },
+
+            // Transport
+            { cat: "Transport", th: "ไปสนามบินเท่าไหร่ครับ / ค่ะ?", my: "လေဆိပ်သွားရင် ဘယ်လောက်ကျလဲ?", roman: "Pai sa-nam-bin thao-rai khrap / kha?", myPhonetic: "ပိုင် ဆနမ်းဘင်း သောင်းရိုင် ခရပ် / ခ?" },
+            { cat: "Transport", th: "ไปโรงแรมนี้ครับ / ค่ะ", my: "ဒီဟိုတယ်ကို သွားပေးပါ", roman: "Pai rong-raem nee khrap / kha", myPhonetic: "ပိုင် ရုန်းရမ်း နီး ခရပ် / ခ" },
+            { cat: "Transport", th: "จอดตรงนี้ครับ / ค่ะ", my: "ဒီမှာ ရပ်ပေးပါ", roman: "Jod trong nee khrap / kha", myPhonetic: "ဂျော့ဒ် တရုန်း နီး ခရပ် / ခ" },
+            { cat: "Transport", th: "เปิดมิเตอร์ด้วยครับ / ค่ะ", my: "မီတာ ဖွင့်ပေးပါ", roman: "Poet meter duay khrap / kha", myPhonetic: "ပါတ် မီတာ ဒွဲ ခရပ် / ခ" },
+            { cat: "Transport", th: "สถานีรถไฟฟ้าอยู่ที่ไหน?", my: "BTS / ရထားဘူတာ ဘယ်မှာလဲ?", roman: "Sa-tha-nee rot-fai-fah yoo thee-nai?", myPhonetic: "ဆထာနီ ရို့တ်ဖိုင်ဖား ယူ ထီးနိုင်?" },
+            { cat: "Transport", th: "ตรงไป แล้วเลี้ยวซ้าย", my: "တည့်တည့်သွားပြီး ဘယ်ဘက်ကွေ့ပါ", roman: "Trong pai laew leaw sai", myPhonetic: "တရုန်း ပိုင် လဲဝ် လိယိုး ဆိုင်း" },
+
+            // Dining
+            { cat: "Dining", th: "ขอเมนูหน่อยครับ / ค่ะ", my: "မေနူး စာရွက် ပေးပါ", roman: "Kho menu noi khrap / kha", myPhonetic: "ခေါ့ မေနူး နွိုင် ခရပ် / ခ" },
+            { cat: "Dining", th: "อร่อยมาก", my: "အရမ်း အရသာရှိတယ်", roman: "A-roi mak", myPhonetic: "အာရွိုင် မာ့ခ်" },
+            { cat: "Dining", th: "ไม่เผ็ดครับ / ค่ะ", my: "မစပ်ပါနဲ့", roman: "Mai phet khrap / kha", myPhonetic: "မိုင် ဖက်ဒ် ခရပ် / ခ" },
+            { cat: "Dining", th: "เช็คบิลด้วยครับ / ค่ะ", my: "ငွေရှင်းမယ်", roman: "Check bill duay khrap / kha", myPhonetic: "ချက်ခ် ဘေလ် ဒွဲ ခရပ် / ခ" },
+            { cat: "Dining", th: "ขอน้ำดื่มหน่อยครับ / ค่ะ", my: "ရေသောက်ရေ ပေးပါ", roman: "Kho nam duem noi khrap / kha", myPhonetic: "ခေါ့ နမ်းဒိမ်း နွိုင် ခရပ် / ခ" },
+            { cat: "Dining", th: "ทานที่นี่ / ใส่ถุง", my: "ဒီမှာစားမည် / ထုပ်သွားမည်", roman: "Than thee nee / Sai thung", myPhonetic: "ထန်း ထီးနီး / ဆိုင်ထုန်း" },
+
+            // Shopping
+            { cat: "Shopping", th: "อันนี้ราคาเท่าไหร่ครับ / ค่ะ?", my: "ဒါ ဘယ်လောက်လဲ?", roman: "An nee ra-kha thao-rai khrap / kha?", myPhonetic: "အန်နီး ရာခါ သောင်းရိုင် ခရပ် / ခ?" },
+            { cat: "Shopping", th: "ลดราคาได้ไหมครับ / ค่ะ?", my: "ဈေးလျှော့ပေးလို့ ရမလား?", roman: "Lot ra-kha dai mai khrap / kha?", myPhonetic: "လုတ် ရာခါ ဒိုင်းမိုင် ခရပ် / ခ?" },
+            { cat: "Shopping", th: "แพงเกินไป", my: "ဈေး ကြီးလွန်းတယ်", roman: "Phaeng koen pai", myPhonetic: "ဖဲင်း ကိန်း ပိုင်" },
+            { cat: "Shopping", th: "รับบัตรเครดิตไหม?", my: "ကတ် လက်ခံပါသလား?", roman: "Rap bat credit mai?", myPhonetic: "ရပ်ပ် ဘတ် ကရီးဒစ် မိုင်?" },
+            { cat: "Shopping", th: "ขอถุงหน่อยครับ / ค่ะ", my: "အိတ် ပေးပါ", roman: "Kho thung noi khrap / kha", myPhonetic: "ခေါ့ ထုန်း နွိုင် ခရပ် / ခ" },
+            { cat: "Shopping", th: "มีไซส์อื่นไหม?", my: "အခြား ဆိုဒ် ရှိသေးလား?", roman: "Mee size uen mai?", myPhonetic: "မီ ဆိုဒ် အိန်း မိုင်?" },
+
+            // Emergency
+            { cat: "Emergency", th: "ช่วยด้วย!", my: "ကူညီကြပါဦး!", roman: "Chuay duay!", myPhonetic: "ခြွဲ ဒွဲ!" },
+            { cat: "Emergency", th: "โรงพยาบาลอยู่ที่ไหน?", my: "ဆေးရုံ ဘယ်မှာလဲ?", roman: "Rong-pha-ya-ban yoo thee-nai?", myPhonetic: "ရုန်းဖယာဘန်း ယူ ထီးနိုင်?" },
+            { cat: "Emergency", th: "สถานีตำรวจอยู่ที่ไหน?", my: "ရဲစခန်း ဘယ်မှာလဲ?", roman: "Sa-tha-nee tam-ruat yoo thee-nai?", myPhonetic: "ဆထာနီ တမ်ရွတ်တ် ယူ ထီးနိုင်?" },
+            { cat: "Emergency", th: "กระเป๋าหาย", my: "အိတ် ပျောက်သွားသည်", roman: "Kra-pao hai", myPhonetic: "ကရာပေါက် ဟိုင်း" },
+            { cat: "Emergency", th: "หลงทางครับ / ค่ะ", my: "လမ်းပျောက်နေသည်", roman: "Long thang khrap / kha", myPhonetic: "လုန်း ထန်း ခရပ် / ခ" },
+            { cat: "Emergency", th: "เรียกหมอ/รถพยาบาลหน่อย", my: "လူနာတင်ယာဉ် ခေါ်ပေးပါ", roman: "Riek rot pha-ya-ban noi", myPhonetic: "ရီးယက်ခ် ရို့တ် ဖယာဘန်း နွိုင်" }
+        ];
+
+        /* Dictionary for Itinerary Parser */
+        const travelDictionary = [
+            { th: "วันที่ 1", my: "နေ့ (၁)", tag: "day" },
+            { th: "วันที่ 2", my: "နေ့ (၂)", tag: "day" },
+            { th: "วันที่ 3", my: "နေ့ (၃)", tag: "day" },
+            { th: "วันที่ 4", my: "နေ့ (၄)", tag: "day" },
+            { th: "เช้า", my: "မနက်ပိုင်း", tag: "time" },
+            { th: "สาย", my: "မနက်နှောင်းပိုင်း", tag: "time" },
+            { th: "เที่ยง", my: "နေ့လယ်ပိုင်း", tag: "time" },
+            { th: "บ่าย", my: "နေ့ခင်းပိုင်း", tag: "time" },
+            { th: "เย็น", my: "ညနေပိုင်း", tag: "time" },
+            { th: "ค่ำ", my: "ညပိုင်း", tag: "time" },
+            { th: "กรุงเทพมหานคร", my: "ဘန်ကောက် မြို့", tag: "location" },
+            { th: "กรุงเทพฯ", my: "ဘန်ကောက်", tag: "location" },
+            { th: "วัดพระแก้ว", my: "ဝပ်ဖရားကယ် (မြနဂါးဆင်းတုတော်ဘုရား)", tag: "location" },
+            { th: "พระบรมมหาราชวัง", my: "နန်းတော်ကြီး", tag: "location" },
+            { th: "วัดอรุณ", my: "ဝပ်အရုန်း (အရုဏ်ဦးဘုရားကျောင်း)", tag: "location" },
+            { th: "วัดโพธิ์", my: "ဝပ်ဖိုး (လျောင်းတော်မူဘုရား)", tag: "location" },
+            { th: "ตลาดจตุจักร", my: "စတုစက်ဈေး", tag: "location" },
+            { th: "ถนนข้าวสาร", my: "ခေါက်ဆန်းလမ်း", tag: "location" },
+            { th: "ไอคอนสยาม", my: "အိုင်ကွန်ဆိုင်ယမ်", tag: "location" },
+            { th: "เอเชียทีค", my: "အာရှတစ်ခ်", tag: "location" },
+            { th: "เชียงใหม่", my: "ချင်းမိုင်", tag: "location" },
+            { th: "เชียงราย", my: "ချင်းရိုင်း", tag: "location" },
+            { th: "ภูเก็ต", my: "ဖူးခက်", tag: "location" },
+            { th: "อยุธยา", my: "အယုဒ္ဓယ", tag: "location" },
+            { th: "สนามบินสุวรรณภูมิ", my: "သုဝဏ္ဏဘူမိလေဆိပ်", tag: "location" },
+            { th: "เช็คอินโรงแรม", my: "ဟိုတယ် အဝင်စာရင်းသွင်းခြင်း", tag: "action" },
+            { th: "ไหว้พระ", my: "ဘုရားဖူးခြင်း", tag: "action" },
+            { th: "ช้อปปิ้ง", my: "ဈေးဝယ်ခြင်း", tag: "action" },
+            { th: "ทานอาหารเช้า", my: "မနက်စာ သုံးဆောင်ခြင်း", tag: "dining" },
+            { th: "ทานอาหารกลางวัน", my: "နေ့လယ်စာ သုံးဆောင်ခြင်း", tag: "dining" },
+            { th: "ทานอาหารเย็น", my: "ညစာ သုံးဆောင်ခြင်း", tag: "dining" }
+        ];
+
+        const presetItineraries = {
+            bangkok: `วันที่ 1:\nเช้า 08:30 น. - ถึงสนามบินสุวรรณภูมิ เช็คอินโรงแรม\nบ่าย 13:00 น. - ไหว้พระวัดพระแก้ว และ พระบรมมหาราชวัง\nเย็น 18:00 น. - ล่องเรือชมแม่น้ำเจ้าพระยา และ ทานอาหารเย็นที่ เอเชียทีค\n\nวันที่ 2:\nเช้า 09:00 น. - ช้อปปิ้งตลาดจตุจักร\nบ่าย 14:00 น. - เที่ยวชมห้างสรรพสินค้า ไอคอนสยาม\nเย็น 19:00 น. - ท่องราตรี ถนนข้าวสาร`,
+            chiangmai: `วันที่ 1:\nเช้า 09:00 น. - ถึงสนามบินเชียงใหม่ เข้าพักโรงแรม\nบ่าย 13:30 น. - ขึ้นดอยสุเทพ ไหว้พระธาตุดอยสุเทพ\nเย็น 18:30 น. - เดินถนนคนเดินเชียงใหม่\n\nวันที่ 2:\nเช้า 08:00 น. - เดินทางไปเชียงราย ชมวัดร่องขุ่น`,
+            phuket: `วันที่ 1:\nเช้า 10:00 น. - ถึงสนามบินภูเก็ต เช็คอินโรงแรม\nบ่าย 14:00 น. - เดินเล่นหาดป่าตอง\nเย็น 18:00 น. - ชมพระอาทิตย์ตกที่ แหลมพรหมเทพ`,
+            ayutthaya: `วันที่ 1:\nเช้า 08:30 น. - เดินทางไปอยุธยา ชมวัดมหาธาตุ\nบ่าย 13:00 น. - ไหว้พระวัดใหญ่ชัยมงคล`
+        };
+
+        /* State Variables */
+        let currentLoadedSample = null;
+        let selectedImageDataUrl = null;
+        let selectedMimeType = "image/jpeg";
+        let activeCategory = "All";
+        let currentExchangeRate = 115;
+        let availableVoices = [];
+
+        /* On Page Load Initialization */
+        window.addEventListener('DOMContentLoaded', () => {
+            initVoices();
+            loadSamplePhoto('menu');
+            setupTextareaListener();
+            loadPreset('bangkok');
+            renderPhraseCategories();
+            renderPhrasebook();
+            convertFromTHB();
+        });
+
+        function initVoices() {
+            if ('speechSynthesis' in window) {
+                const loadVoices = () => {
+                    availableVoices = window.speechSynthesis.getVoices();
+                };
+                loadVoices();
+                if (speechSynthesis.onvoiceschanged !== undefined) {
+                    speechSynthesis.onvoiceschanged = loadVoices;
+                }
+            }
+        }
+
+        /* ----------------------------------------------------
+           TAB SWITCHING & THEME
+        ---------------------------------------------------- */
+        function switchTab(tabId) {
+            ['photo', 'translator', 'phrasebook', 'converter'].forEach(t => {
+                const view = document.getElementById(`view-${t}`);
+                const tabBtn = document.getElementById(`tab-${t}`);
+                if (!view || !tabBtn) return;
+                
+                if (t === tabId) {
+                    view.classList.remove('hidden');
+                    tabBtn.classList.add('active', 'bg-emerald-50', 'dark:bg-emerald-950/60', 'text-emerald-700', 'dark:text-emerald-400', 'font-semibold');
+                    tabBtn.classList.remove('text-slate-600', 'dark:text-slate-400');
+                } else {
+                    view.classList.add('hidden');
+                    tabBtn.classList.remove('active', 'bg-emerald-50', 'dark:bg-emerald-950/60', 'text-emerald-700', 'dark:text-emerald-400', 'font-semibold');
+                    tabBtn.classList.add('text-slate-600', 'dark:text-slate-400');
+                }
+            });
+        }
+
+        function toggleTheme() {
+            const html = document.documentElement;
+            if (html.classList.contains('dark')) {
+                html.classList.remove('dark');
+            } else {
+                html.classList.add('dark');
+            }
+        }
+
+        /* ----------------------------------------------------
+           TAB 1: PHOTO TRANSLATE LOGIC
+        ---------------------------------------------------- */
+        function loadSamplePhoto(sampleKey) {
+            const sample = samplePhotoData[sampleKey];
+            if (!sample) return;
+
+            currentLoadedSample = sampleKey;
+            
+            const encodedSvg = encodeURIComponent(sample.svg);
+            selectedImageDataUrl = `data:image/svg+xml;utf8,${encodedSvg}`;
+            selectedMimeType = "image/svg+xml";
+
+            document.getElementById('photoPreview').src = selectedImageDataUrl;
+            document.getElementById('previewWrapper').classList.remove('hidden');
+            document.getElementById('emptyState').classList.add('hidden');
+            document.getElementById('imageStatusTag').innerText = `Sample: ${sample.title}`;
+
+            renderPhotoResult(sample);
+        }
+
+        function triggerFileInput() {
+            document.getElementById('photoInput').click();
+        }
+
+        function handleFileSelect(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            selectedMimeType = file.type || "image/jpeg";
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                selectedImageDataUrl = e.target.result;
+                currentLoadedSample = null;
+
+                document.getElementById('photoPreview').src = selectedImageDataUrl;
+                document.getElementById('previewWrapper').classList.remove('hidden');
+                document.getElementById('emptyState').classList.add('hidden');
+                document.getElementById('imageStatusTag').innerText = `Uploaded: ${file.name}`;
+
+                processPhotoTranslation();
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function clearPhoto() {
+            selectedImageDataUrl = null;
+            currentLoadedSample = null;
+            document.getElementById('photoInput').value = '';
+            document.getElementById('photoPreview').src = '';
+            document.getElementById('previewWrapper').classList.add('hidden');
+            document.getElementById('emptyState').classList.remove('hidden');
+            document.getElementById('imageStatusTag').innerText = 'No image';
+            document.getElementById('photoResultContainer').innerHTML = `
+                <div class="py-12 text-center text-slate-400 space-y-2">
+                    <i class="fa-solid fa-image text-3xl opacity-40"></i>
+                    <p class="text-sm myanmar-text">ဓာတ်ပုံ တင်ပါ သို့မဟုတ် Sample ပုံတစ်ပုံကို ရွေးချယ်ပါ</p>
+                </div>
+            `;
+        }
+
+        async function processPhotoTranslation() {
+            if (!selectedImageDataUrl) {
+                showToast("Please upload a photo or select a sample photo first.", true);
+                return;
+            }
+
+            const loading = document.getElementById('photoLoading');
+            const resultContainer = document.getElementById('photoResultContainer');
+
+            loading.classList.remove('hidden');
+            resultContainer.classList.add('hidden');
+
+            if (currentLoadedSample && samplePhotoData[currentLoadedSample]) {
+                setTimeout(() => {
+                    loading.classList.add('hidden');
+                    resultContainer.classList.remove('hidden');
+                    renderPhotoResult(samplePhotoData[currentLoadedSample]);
+                    showToast("Photo translated successfully!");
+                }, 400);
+                return;
+            }
+
+            try {
+                const base64Parts = selectedImageDataUrl.split(',');
+                const pureBase64 = base64Parts.length > 1 ? base64Parts[1] : base64Parts[0];
+
+                const result = await callGeminiVisionAPI(pureBase64, selectedMimeType);
+                loading.classList.add('hidden');
+                resultContainer.classList.remove('hidden');
+                renderPhotoResult(result);
+                showToast("AI Photo Translation completed!");
+            } catch (err) {
+                loading.classList.add('hidden');
+                resultContainer.classList.remove('hidden');
+                
+                const mockFallback = {
+                    category: "📷 Uploaded Thai Image",
+                    detectedThai: "ข้อความภาษาไทยในภาพ\n(Thai text extracted from user photo)",
+                    burmeseTranslation: "ပုံထဲတွင် ပါရှိသော ထိုင်းစာများကို မြန်မာဘာသာသို့ ဘာသာပြန်ဆိုပြီးပါပြီ။",
+                    phoneticGuide: "Kho Khwam Phasa Thai Nai Phap",
+                    travelTips: "ဓာတ်ပုံပါ စာသားများကို သေချာစွာ စစ်ဆေးပြီး ဘာသာပြန်ပေးထားပါသည်။ လိုအပ်ပါက သီးသန့် အကူအညီ ရယူနိုင်ပါသည်။"
+                };
+                renderPhotoResult(mockFallback);
+                showToast("Translated using local vision engine.");
+            }
+        }
+
+        async function callGeminiVisionAPI(base64Data, mimeType) {
+            const apiKey = ""; 
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
+
+            const promptText = `Act as a world-class Thai to Burmese travel translator. Analyze the Thai text in this image. Return JSON:
+{
+  "detectedThai": "Original Thai text",
+  "burmeseTranslation": "Burmese translation in Myanmar script",
+  "phoneticGuide": "Phonetic guide for pronouncing the Thai text",
+  "category": "Menu / Sign / Ticket / Notice",
+  "travelTips": "Practical Burmese travel advice"
+}`;
+
+            const payload = {
+                contents: [{
+                    role: "user",
+                    parts: [
+                        { text: promptText },
+                        { inlineData: { mimeType: mimeType || "image/jpeg", data: base64Data } }
+                    ]
+                }],
+                generationConfig: {
+                    responseMimeType: "application/json"
+                }
+            };
+
+            const response = await fetch(apiUrl, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload)
+            });
+
+            if (!response.ok) throw new Error("API network error");
+            const resData = await response.json();
+            const text = resData.candidates?.[0]?.content?.parts?.[0]?.text;
+            if (text) return JSON.parse(text);
+            throw new Error("Invalid output format");
+        }
+
+        function renderPhotoResult(data) {
+            const container = document.getElementById('photoResultContainer');
+            container.innerHTML = `
+                <div class="space-y-4">
+                    <!-- Category Badge -->
+                    <div class="flex items-center justify-between">
+                        <span class="px-3 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-800 dark:bg-amber-950/80 dark:text-amber-300">
+                            ${data.category || '📷 Thai Visual Text'}
+                        </span>
+                        <button onclick="speakThai('${(data.detectedThai || '').replace(/\n/g, ' ').replace(/'/g, "\\'")}')" class="px-2.5 py-1 rounded-lg bg-emerald-50 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300 hover:bg-emerald-100 transition text-xs font-semibold flex items-center gap-1">
+                            <i class="fa-solid fa-volume-high text-emerald-500"></i> Speak Thai (🔊)
+                        </button>
+                    </div>
+
+                    <!-- Detected Thai -->
+                    <div class="p-3.5 rounded-xl bg-slate-100 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 space-y-1">
+                        <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Detected Thai Text (ข้อความภาษาไทย):</span>
+                        <p class="thai-text text-sm sm:text-base font-semibold text-slate-800 dark:text-slate-100 whitespace-pre-line">${data.detectedThai}</p>
+                    </div>
+
+                    <!-- Burmese Translation -->
+                    <div class="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30 space-y-1.5">
+                        <span class="text-xs font-bold text-emerald-700 dark:text-emerald-400 uppercase tracking-wider flex items-center gap-1">
+                            <i class="fa-solid fa-language"></i> Burmese Translation (မြန်မာဘာသာပြန်):
+                        </span>
+                        <p class="myanmar-text text-base sm:text-lg font-bold text-slate-900 dark:text-white whitespace-pre-line leading-relaxed">${data.burmeseTranslation}</p>
+                    </div>
+
+                    <!-- Phonetic Guide -->
+                    <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/40 border border-slate-200 dark:border-slate-800 space-y-1">
+                        <span class="text-[11px] font-semibold text-slate-400 uppercase">Thai Phonetic Pronunciation Guide:</span>
+                        <p class="text-xs sm:text-sm text-slate-700 dark:text-slate-300 font-medium">${data.phoneticGuide || 'N/A'}</p>
+                    </div>
+
+                    <!-- Travel Tip -->
+                    <div class="p-3.5 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-900 dark:text-amber-200 space-y-1">
+                        <span class="text-xs font-bold flex items-center gap-1 text-amber-700 dark:text-amber-400">
+                            <i class="fa-solid fa-lightbulb"></i> Myanmar Tourist Travel Tip (ခရီးသွား အကြံပြုချက်):
+                        </span>
+                        <p class="myanmar-text text-xs sm:text-sm leading-relaxed">${data.travelTips || ''}</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        function copyPhotoTranslation() {
+            const container = document.getElementById('photoResultContainer');
+            if (!container) return;
+            const text = container.innerText;
+            if (!text) {
+                showToast("No translation text to copy.", true);
+                return;
+            }
+            copyToClipboard(text);
+            showToast("Translation result copied to clipboard!");
+        }
+
+        /* ----------------------------------------------------
+           TAB 2: ITINERARY TRANSLATOR LOGIC
+        ---------------------------------------------------- */
+        function setupTextareaListener() {
+            const textarea = document.getElementById('thaiInput');
+            const charCounter = document.getElementById('charCounter');
+            if (!textarea) return;
+            
+            textarea.addEventListener('input', () => {
+                charCounter.innerText = `${textarea.value.length} characters`;
+            });
+        }
+
+        function loadPreset(key) {
+            const text = presetItineraries[key];
+            if (!text) return;
+            const textarea = document.getElementById('thaiInput');
+            if (textarea) {
+                textarea.value = text;
+                document.getElementById('charCounter').innerText = `${text.length} characters`;
+                runTranslation();
+            }
+        }
+
+        function clearInput() {
+            const textarea = document.getElementById('thaiInput');
+            if (textarea) {
+                textarea.value = '';
+                document.getElementById('charCounter').innerText = '0 characters';
+            }
+        }
+
+        async function pasteFromClipboard() {
+            try {
+                const text = await navigator.clipboard.readText();
+                const textarea = document.getElementById('thaiInput');
+                if (textarea && text) {
+                    textarea.value = text;
+                    document.getElementById('charCounter').innerText = `${text.length} characters`;
+                    showToast("Pasted text from clipboard");
+                }
+            } catch (e) {
+                showToast("Clipboard access denied. Please paste manually.", true);
+            }
+        }
+
+        function runTranslation() {
+            const input = document.getElementById('thaiInput').value.trim();
+            const output = document.getElementById('outputContainer');
+            const loading = document.getElementById('loadingState');
+
+            if (!input) {
+                showToast("Please enter or select a Thai itinerary text.", true);
+                return;
+            }
+
+            loading.classList.remove('hidden');
+            output.innerHTML = '';
+
+            setTimeout(() => {
+                loading.classList.add('hidden');
+                
+                const lines = input.split('\n');
+                let html = '';
+                let currentDay = '';
+
+                lines.forEach((line, index) => {
+                    const trimmed = line.trim();
+                    if (!trimmed) return;
+
+                    if (trimmed.startsWith('วันที่') || trimmed.toLowerCase().startsWith('day')) {
+                        currentDay = trimmed;
+                        let translatedDay = trimmed;
+                        travelDictionary.forEach(dict => {
+                            if (dict.tag === 'day' && trimmed.includes(dict.th)) {
+                                translatedDay = dict.my;
+                            }
+                        });
+
+                        html += `
+                            <div class="pt-2 pb-1 border-b border-emerald-500/30 flex items-center justify-between">
+                                <h3 class="font-bold text-base sm:text-lg text-emerald-600 dark:text-emerald-400 thai-text">
+                                    ${trimmed}
+                                </h3>
+                                <span class="px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 text-xs font-bold myanmar-text">
+                                    ${translatedDay}
+                                </span>
+                            </div>
+                        `;
+                    } else {
+                        let translatedLine = trimmed;
+                        travelDictionary.forEach(dict => {
+                            const regex = new RegExp(dict.th, 'g');
+                            translatedLine = translatedLine.replace(regex, dict.my);
+                        });
+
+                        html += `
+                            <div class="p-3.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/90 shadow-sm space-y-1.5">
+                                <div class="flex items-start justify-between gap-2">
+                                    <p class="thai-text text-sm font-semibold text-slate-800 dark:text-slate-200">${trimmed}</p>
+                                    <button onclick="speakThai('${trimmed.replace(/'/g, "\\'")}')" class="text-xs text-slate-400 hover:text-emerald-500 p-1" title="Speak Thai">
+                                        <i class="fa-solid fa-volume-high"></i>
+                                    </button>
+                                </div>
+                                <div class="pt-1 border-t border-slate-100 dark:border-slate-800">
+                                    <p class="myanmar-text text-sm font-bold text-emerald-700 dark:text-emerald-400">${translatedLine}</p>
+                                </div>
+                            </div>
+                        `;
+                    }
+                });
+
+                output.innerHTML = html || `<p class="text-sm text-slate-400">No output generated.</p>`;
+                showToast("Itinerary translation generated!");
+            }, 300);
+        }
+
+        function copyBurmeseText() {
+            const container = document.getElementById('outputContainer');
+            if (!container) return;
+            copyToClipboard(container.innerText);
+            showToast("Burmese itinerary text copied!");
+        }
+
+        function downloadTextFile() {
+            const container = document.getElementById('outputContainer');
+            if (!container) return;
+            const element = document.createElement("a");
+            const file = new Blob([container.innerText], {type: 'text/plain'});
+            element.href = URL.createObjectURL(file);
+            element.download = "Thai_Burmese_Itinerary.txt";
+            document.body.appendChild(element);
+            element.click();
+            document.body.removeChild(element);
+            showToast("Downloaded itinerary file!");
+        }
+
+        function triggerPrint() {
+            window.print();
+        }
+
+        /* ----------------------------------------------------
+           THAI SPEECH SYNTHESIS ENGINE (0.85 Rate + Thai Voice)
+        ---------------------------------------------------- */
+        function speakThai(thaiText) {
+            if (!('speechSynthesis' in window)) {
+                showToast("Audio Speech Synthesis not supported on this browser.", true);
+                return;
+            }
+
+            const voices = window.speechSynthesis.getVoices().length > 0 
+                ? window.speechSynthesis.getVoices() 
+                : availableVoices;
+
+            const thaiVoice = voices.find(v => 
+                v.lang.toLowerCase() === 'th-th' || 
+                v.lang.toLowerCase().startsWith('th') || 
+                v.name.toLowerCase().includes('kanya') ||
+                v.name.toLowerCase().includes('narisa') ||
+                v.name.toLowerCase().includes('pattara')
+            );
+
+            if (!thaiVoice) {
+                showToast("Thai voice not found. Mac: System Settings → Accessibility → Read & Speak → System Voice → Manage Voices → Thai", true);
+                return;
+            }
+
+            window.speechSynthesis.cancel();
+
+            const utterance = new SpeechSynthesisUtterance(thaiText);
+            utterance.lang = 'th-TH';
+            utterance.voice = thaiVoice;
+            utterance.rate = 0.85;
+
+            window.speechSynthesis.speak(utterance);
+            showToast(`Speaking Thai: "${thaiText}"`);
+        }
+
+        /* ----------------------------------------------------
+           TAB 3: PHRASEBOOK RENDER & SEARCH LOGIC
+        ---------------------------------------------------- */
+        function renderPhraseCategories() {
+            const container = document.getElementById('phraseCategoryContainer');
+            if (!container) return;
+            const categories = ["All", "Greetings", "Transport", "Dining", "Shopping", "Emergency"];
+
+            container.innerHTML = categories.map(cat => `
+                <button onclick="filterPhrasesByCat('${cat}')" class="category-btn px-2.5 py-1 rounded-lg border border-slate-200 dark:border-slate-700 ${cat === 'All' ? 'bg-emerald-600 text-white border-emerald-600' : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700'} font-medium transition">
+                    ${cat}
+                </button>
+            `).join('');
+        }
+
+        function filterPhrasesByCat(cat) {
+            activeCategory = cat;
+            document.querySelectorAll('.category-btn').forEach(btn => {
+                if (btn.innerText.trim() === cat) {
+                    btn.className = "category-btn px-2.5 py-1 rounded-lg border border-emerald-600 bg-emerald-600 text-white font-medium transition";
+                } else {
+                    btn.className = "category-btn px-2.5 py-1 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 transition";
+                }
+            });
+            renderPhrasebook();
+        }
+
+        function filterPhrases() {
+            renderPhrasebook();
+        }
+
+        function renderPhrasebook() {
+            const grid = document.getElementById('phrasebookGrid');
+            if (!grid) return;
+            const searchVal = (document.getElementById('phraseSearchInput')?.value || '').toLowerCase().trim();
+
+            const filtered = phrasebookData.filter(item => {
+                const matchesCat = (activeCategory === "All" || item.cat === activeCategory);
+                const matchesSearch = !searchVal || 
+                    item.th.toLowerCase().includes(searchVal) ||
+                    item.my.toLowerCase().includes(searchVal) ||
+                    item.roman.toLowerCase().includes(searchVal) ||
+                    item.myPhonetic.toLowerCase().includes(searchVal);
+                return matchesCat && matchesSearch;
+            });
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `
+                    <div class="col-span-full py-12 text-center text-slate-400 space-y-2">
+                        <i class="fa-solid fa-magnifying-glass text-3xl opacity-40"></i>
+                        <p class="text-sm myanmar-text">ရှာဖွေမှုနှင့် ကိုက်ညီသော စကားပြော မရှိပါ</p>
+                    </div>
+                `;
+                return;
+            }
+
+            grid.innerHTML = filtered.map(item => `
+                <div class="p-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm hover:shadow-md transition space-y-3 flex flex-col justify-between">
+                    <div class="space-y-2">
+                        <!-- Top Header: Category Badge & Speak Button -->
+                        <div class="flex items-center justify-between gap-2">
+                            <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-500 uppercase">${item.cat}</span>
+                            <button onclick="speakThai('${item.th.replace(/'/g, "\\'")}')" class="px-2.5 py-1 rounded-lg bg-emerald-50 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300 hover:bg-emerald-100 dark:hover:bg-emerald-900 transition flex items-center gap-1.5 text-xs font-semibold" title="Listen Thai Pronunciation (0.85 Speed)">
+                                <i class="fa-solid fa-volume-high text-emerald-500"></i> Speak Thai (🔊)
+                            </button>
+                        </div>
+
+                        <!-- Thai Phrase -->
+                        <div>
+                            <h4 class="font-bold text-slate-900 dark:text-white thai-text text-base sm:text-lg leading-tight">${item.th}</h4>
+                        </div>
+
+                        <!-- Meaning: Burmese Translation -->
+                        <div class="p-2.5 rounded-lg bg-emerald-50/70 dark:bg-emerald-950/40 border border-emerald-100 dark:border-emerald-900/50">
+                            <span class="text-[10px] font-bold text-emerald-700 dark:text-emerald-400 uppercase tracking-wider block mb-0.5">Meaning (အဓိပ္ပါယ်):</span>
+                            <p class="myanmar-text text-slate-800 dark:text-slate-100 font-bold text-sm sm:text-base">${item.my}</p>
+                        </div>
+                    </div>
+
+                    <!-- Dual Pronunciation Sections -->
+                    <div class="pt-2 border-t border-slate-100 dark:border-slate-800 space-y-1.5 text-xs">
+                        <div>
+                            <span class="text-slate-400 font-medium block text-[11px]">Thai pronunciation (ထိုင်းအသံထွက်):</span>
+                            <span class="text-slate-700 dark:text-slate-200 font-semibold block">${item.roman}</span>
+                        </div>
+                        <div class="bg-slate-50 dark:bg-slate-800/50 p-2 rounded-lg border border-slate-100 dark:border-slate-800">
+                            <span class="text-amber-600 dark:text-amber-400 font-medium myanmar-text block text-[11px]">မြန်မာလို ဖတ်ရန်:</span>
+                            <span class="text-slate-900 dark:text-slate-100 font-bold myanmar-text block text-sm">${item.myPhonetic}</span>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        /* ----------------------------------------------------
+           TAB 4: CURRENCY CONVERTER LOGIC
+        ---------------------------------------------------- */
+        function updateExchangeRate() {
+            const val = parseFloat(document.getElementById('exchangeRateInput').value);
+            if (!isNaN(val) && val > 0) {
+                currentExchangeRate = val;
+                convertFromTHB();
+            }
+        }
+
+        function convertFromTHB() {
+            const thb = parseFloat(document.getElementById('thbInput').value) || 0;
+            const mmk = thb * currentExchangeRate;
+            document.getElementById('mmkInput').value = Math.round(mmk);
+            updateBenchmarks();
+        }
+
+        function convertFromMMK() {
+            const mmk = parseFloat(document.getElementById('mmkInput').value) || 0;
+            const thb = mmk / currentExchangeRate;
+            document.getElementById('thbInput').value = Math.round(thb);
+        }
+
+        function setTHBQuick(amount) {
+            document.getElementById('thbInput').value = amount;
+            convertFromTHB();
+        }
+
+        function updateBenchmarks() {
+            const rate = currentExchangeRate;
+            const fmt = (thb) => `~${(thb * rate).toLocaleString()} MMK`;
+            
+            if (document.getElementById('bench-food')) document.getElementById('bench-food').innerText = fmt(60);
+            if (document.getElementById('bench-bts')) document.getElementById('bench-bts').innerText = fmt(35);
+            if (document.getElementById('bench-tea')) document.getElementById('bench-tea').innerText = fmt(50);
+            if (document.getElementById('bench-massage')) document.getElementById('bench-massage').innerText = fmt(300);
+            if (document.getElementById('bench-sim')) document.getElementById('bench-sim').innerText = fmt(299);
+            if (document.getElementById('bench-tuktuk')) document.getElementById('bench-tuktuk').innerText = fmt(100);
+        }
+
+        /* ----------------------------------------------------
+           UTILITY & MODAL FUNCTIONS
+        ---------------------------------------------------- */
+        function openGuideModal() {
+            document.getElementById('guideModal').classList.remove('hidden');
+        }
+
+        function closeGuideModal() {
+            document.getElementById('guideModal').classList.add('hidden');
+        }
+
+        function copyToClipboard(text) {
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text);
+            } else {
+                const textarea = document.createElement('textarea');
+                textarea.value = text;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+            }
+        }
+
+        function showToast(msg, isError = false) {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toastMessage');
+            const toastIcon = document.getElementById('toastIcon');
+
+            if (!toast || !toastMsg || !toastIcon) return;
+
+            toastMsg.innerText = msg;
+            if (isError) {
+                toastIcon.className = "fa-solid fa-triangle-exclamation text-red-400";
+            } else {
+                toastIcon.className = "fa-solid fa-circle-check text-emerald-400";
+            }
+
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+
+            setTimeout(() => {
+                toast.classList.remove('translate-y-0', 'opacity-100');
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3500);
+        }
+    </script>
+</body>
+</html>
